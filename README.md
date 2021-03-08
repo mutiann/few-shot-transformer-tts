@@ -1,5 +1,5 @@
 # Multilingual Byte2Speech Text-To-Speech Models Are Few-shot Spoken Language Learners
-This is an implementation of the paper, based on the open-source 
+This is an implementation of the [paper](https://arxiv.org/abs/2103.03541), based on the open-source 
 [Transformer-TTS](https://github.com/soobinseo/Transformer-TTS). Audio 
 samples of the paper is available [here](https://mutiann.github.io/papers/byte2speech).
 
