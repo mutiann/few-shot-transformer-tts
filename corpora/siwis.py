@@ -22,7 +22,7 @@ for wav_file in wav_files:
     script = open(wav_file[:len(in_path) + 1] + 'text' + wav_file[len(in_path) + 5:-4] + '.txt',
                   encoding='utf-8').read().strip()
     dur = librosa.get_duration(filename=wav_file)
-    if not 1 <= dur <= 20 or any([c.isdigit() for c in script]):
+    if any([c.isdigit() for c in script]):
         n_skip += 1
         continue
     total_dur += dur

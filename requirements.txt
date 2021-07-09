@@ -1,0 +1,10 @@
+requests>=2.23.0
+editdistance>=0.5.3
+tqdm>=4.46.0
+fastdtw==0.3.4
+scipy>=1.5.2
+torch>=1.6.0
+matplotlib>=2.2.0
+SoundFile==0.10.3.post1
+librosa==0.6.0
+tensorflow==1.15.0

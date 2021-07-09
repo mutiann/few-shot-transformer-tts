@@ -10,6 +10,7 @@ wav_output_path = os.path.join(output_path, 'wavs')
 os.makedirs(wav_output_path, exist_ok=True)
 
 samples = open(os.path.join(in_path, 'transcript.v.1.4.txt'), encoding='utf-8').read().splitlines()
+in_path = os.path.join(in_path, 'kss')
 
 spk_name = 'kss'
 lang = 'ko_kr'
@@ -21,13 +22,10 @@ fw = open(os.path.join(output_path, 'metadata.csv'), 'w', encoding='utf-8')
 i = 0
 for l in samples:
     l = l.split('|')
-    filename = l[0]
+    filename = os.path.join(*l[0].split('/'))
     script = l[2]
     wav_file = os.path.join(in_path, filename)
     dur = librosa.get_duration(filename=wav_file)
-    if not 1 <= dur <= 20:
-        n_skip += 1
-        continue
     total_dur += dur
     shutil.copy(wav_file, os.path.join(wav_output_path, '%s_%010d.wav' % (spk_name, i)))
     fw.write('|'.join(['%s_%010d' % (spk_name, i), script, spk_name, lang]) + '\n')

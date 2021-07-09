@@ -8,7 +8,7 @@ from collections import defaultdict
 
 filter_sub = [r'countersuffix26', r'repeat500']
 
-base_path = os.path.join(dataset_path, 'jsut')
+base_path = os.path.join(dataset_path, 'jsut_ver1.1')
 
 spk_samples = defaultdict(list)
 lang_name = 'ja_jp'
@@ -25,6 +25,8 @@ for f in tqdm.tqdm(trans):
     if sub_name in filter_sub:
         continue
     spk = os.path.split(os.path.split(f[:-len(transname) - 1])[0])[-1]
+    if spk == 'jsut_ver1.1':
+        spk = 'jsut'
     for l in sub_samples:
         filename = l.split(':')[0]
         script = l[len(filename) + 1:]
@@ -36,9 +38,6 @@ for f in tqdm.tqdm(trans):
             n_skip += 1
             continue
         dur = librosa.get_duration(filename=wav_file) - 1
-        if not 1 <= dur <= 20:
-            n_skip += 1
-            continue
         spk_samples[spk].append((wav_file, script, dur))
 
 n_spk_skip = 0

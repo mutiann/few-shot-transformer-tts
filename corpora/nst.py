@@ -44,11 +44,11 @@ def process(base_path, lang_name):
         wav, fs = sf.read(wav_file, channels=2, samplerate=44100,
                           format='RAW', subtype='PCM_16', endian='big')
         wav = wav[:, 0][10:]  # Noise in starts
-        _, (l, r) = librosa.effects.trim(wav, top_db=30)
-        wav = wav[max(0, l - 3000): min(len(wav), r + 3000)]
+        # _, (l, r) = librosa.effects.trim(wav, top_db=30)
+        # wav = wav[max(0, l - 3000): min(len(wav), r + 3000)]
         dur = len(wav) / 44100
         script = line.replace("  ", " ")
-        if not 1 <= dur <= 20 or any([c.isdigit() for c in script]):
+        if any([c.isdigit() for c in script]):
             n_skip += 1
             continue
         wav = librosa.resample(wav, 44100, 16000)
@@ -74,6 +74,6 @@ def transform(base_path):
         wavfile.write(os.path.join(wav_output_path, os.path.split(f)[-1][:-4] + '.wav'), 16000, wav)
 
 if __name__ == '__main__':
-    corpora = [('danish', 'da'), ('norwegian', 'nb')]
+    corpora = [('da.talesyntese', 'da'), ('ibm.talesyntese.nor', 'nb')]
     for corpus, lang_name in corpora:
         process(os.path.join(dataset_path, corpus), lang_name)

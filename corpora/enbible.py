@@ -27,7 +27,7 @@ for l in samples:
         print("Missing", wav_file)
         continue
     dur = librosa.get_duration(filename=wav_file)
-    if not 1 <= dur <= 20 or any([c.isdigit() for c in script]):
+    if any([c.isdigit() for c in script]):
         print(filename, script, dur)
         n_skip += 1
         continue

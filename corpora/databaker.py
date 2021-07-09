@@ -6,7 +6,7 @@ import os, glob, shutil
 import librosa
 import tqdm
 
-in_path = os.path.join(dataset_path, 'databaker')
+in_path = os.path.join(dataset_path, 'BZNSYP')
 output_path = os.path.join(transformed_path, 'databaker')
 wav_output_path = os.path.join(output_path, 'wavs')
 os.makedirs(wav_output_path, exist_ok=True)
@@ -32,7 +32,7 @@ for l in tqdm.tqdm(samples):
 
     wav_file = os.path.join(in_path, 'Wave', filename + '.wav')
     dur = librosa.get_duration(filename=wav_file)
-    if not 1 <= dur <= 20 or any([c.isdigit() for c in script]):
+    if any([c.isdigit() for c in script]):
         n_skip += 1
         continue
     total_dur += dur

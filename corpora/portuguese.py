@@ -21,16 +21,13 @@ fw = open(os.path.join(output_path, 'metadata.csv'), 'w', encoding='utf-8')
 
 i = 0
 for l in samples:
-    filename = l.split('=')[0]
+    filename = os.path.join(*l.split('=')[0].split('/'))
     script = l[len(filename) + 2:].strip()
     wav_file = os.path.join(in_path, filename)
     if not os.path.exists(wav_file):
         print("Missing", wav_file)
         continue
     dur = librosa.get_duration(filename=wav_file)
-    if not 1 <= dur <= 20:
-        n_skip += 1
-        continue
     total_dur += dur
     shutil.copy(wav_file, os.path.join(wav_output_path, '%s_%010d.wav' % (spk_name, i)))
     fw.write('|'.join(['%s_%010d' % (spk_name, i), script, spk_name, lang]) + '\n')

@@ -5,7 +5,7 @@ import os, glob, shutil, json
 import librosa
 import tqdm
 
-in_path = os.path.join(dataset_path, 'LSRU')
+in_path = os.path.join(dataset_path, 'ruls_data')
 output_path = os.path.join(transformed_path, 'lsru')
 wav_output_path = os.path.join(output_path, 'wavs')
 os.makedirs(wav_output_path, exist_ok=True)
@@ -15,7 +15,7 @@ metainfo = [json.loads(s) for s in metainfo]
 meta_index = {}
 
 for m in metainfo:
-    meta_index[os.path.join(in_path, 'train', m['audio_filepath'])] = m
+    meta_index[os.path.join(in_path, 'train', *(m['audio_filepath'].split('/')))] = m
 
 speakers.sort()
 samples = []
@@ -31,7 +31,7 @@ for spk_dir in tqdm.tqdm(speakers):
     base_wav_files = sorted(glob.glob(os.path.join(spk_dir, '**', '*.wav'), recursive=True))
     durations = [librosa.get_duration(filename=w) for w in base_wav_files]
     scores = [meta_index[w]['score'] for w in base_wav_files]
-    wav_files = [(w, d, s) for w, d, s in zip(base_wav_files, durations, scores) if 1 <= d <= 20 and s >= -1]
+    wav_files = [(w, d, s) for w, d, s in zip(base_wav_files, durations, scores) if s >= -1]
     n_skipped += len(base_wav_files) - len(wav_files)
     if len(wav_files) < 100:
         n_skipped += len(wav_files)

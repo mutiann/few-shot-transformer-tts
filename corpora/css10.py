@@ -30,7 +30,7 @@ def preprocess(base_path, lang_name):
         dur = librosa.get_duration(filename=wav_file)
         if lang_name == 'zh_cn':
             script = ''.join([c for c in script if not (c.isdigit() and c not in "0123456789")])
-        if not 1 <= dur <= 20 or any([c.isdigit() for c in script]):
+        if any([c.isdigit() for c in script]):
             n_skip += 1
             continue
         total_dur += dur

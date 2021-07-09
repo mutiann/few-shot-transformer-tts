@@ -3,7 +3,35 @@
 from corpora import dataset_path, transformed_path
 import os, glob, shutil
 import librosa
-from text.cleaners import expand_abbreviations
+import re
+
+_abbreviations = [(re.compile('\\b%s\\.' % x[0], re.IGNORECASE), x[1]) for x in [
+    ('mrs', 'misess'),
+    ('mr', 'mister'),
+    ('dr', 'doctor'),
+    ('st', 'saint'),
+    ('co', 'company'),
+    ('jr', 'junior'),
+    ('maj', 'major'),
+    ('gen', 'general'),
+    ('drs', 'doctors'),
+    ('rev', 'reverend'),
+    ('lt', 'lieutenant'),
+    ('hon', 'honorable'),
+    ('sgt', 'sergeant'),
+    ('capt', 'captain'),
+    ('esq', 'esquire'),
+    ('ltd', 'limited'),
+    ('col', 'colonel'),
+    ('ft', 'fort'),
+]]
+
+
+def expand_abbreviations(text):
+    for regex, replacement in _abbreviations:
+        text = re.sub(regex, replacement, text)
+    return text
+
 
 in_path = os.path.join(dataset_path, 'LJSpeech-1.1')
 output_path = os.path.join(transformed_path, 'ljspeech')
@@ -26,9 +54,6 @@ for l in samples:
     script = expand_abbreviations(script)
     wav_file = os.path.join(in_path, 'wavs', filename + '.wav')
     dur = librosa.get_duration(filename=wav_file)
-    if not 1 <= dur <= 20:
-        n_skip += 1
-        continue
     total_dur += dur
     shutil.copy(wav_file, os.path.join(wav_output_path, '%s_%010d.wav' % (spk_name, i)))
     fw.write('|'.join(['%s_%010d' % (spk_name, i), script, spk_name, lang]) + '\n')

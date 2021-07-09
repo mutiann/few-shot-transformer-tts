@@ -31,7 +31,7 @@ def preprocess(base_path):
                 continue
             script = l[2]
             dur = librosa.get_duration(filename=wav_file) - 1
-            if not 1 <= dur <= 20 or len(script.split(' ')) <= 2 or any([c.isdigit() for c in script]):
+            if len(script.split(' ')) <= 2 or any([c.isdigit() for c in script]):
                 n_skip += 1
                 continue
             if script.isupper():
