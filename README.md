@@ -48,7 +48,8 @@ Besides, to report CER, you need to create `azure_key.json` with your own Azure 
 Due to significant differences of the datasets used, the implementation is for demonstration only and could not fully 
 reproduce the results in the paper.
 
-###T1
+### T1
+
 `python -m torch.distributed.launch --nproc_per_node=NGPU train.py --model-dir=MODEL_DIR --log-dir=LOG_DIR 
 --data-dir=DATA_DIR --training_languages=en-us:de-de:ja-jp:es-es --warmup_languages=en-us --ddp=True 
 --eval_steps=40000:100000`
@@ -56,7 +57,8 @@ reproduce the results in the paper.
 `python eval.py --model-dir=MODEL_DIR --log-dir=LOG_DIR --data-dir=DATA_DIR --start_step=100000
  --eval_languages=en-us:de-de:ja-jp`
 
-###T2
+### T2
+
 `python -m torch.distributed.launch --nproc_per_node=NGPU train.py --model-dir=MODEL_DIR --log-dir=LOG_DIR 
 --data-dir=DATA_DIR --training_languages=en-us:de-de:fr-fr:ru-ru:en-uk:es-es:uk-ua:pl-pl:it-it:ja-jp:zh-cn --ddp=True 
 --hparams="warmup_steps=350000" --restore_from=T1_MODEL_DIR/model.ckpt-350000 
@@ -65,7 +67,8 @@ reproduce the results in the paper.
 `python eval.py --model-dir=MODEL_DIR --log-dir=LOG_DIR --data-dir=DATA_DIR --start_step=400000
  --eval_languages=zh-cn:ru-ru:it-it`
 
-###T3
+### T3
+
 `python -m torch.distributed.launch --nproc_per_node=NGPU train.py --model-dir=MODEL_DIR --log-dir=LOG_DIR 
 --data-dir=DATA_DIR --training_languages=en-us:de-de:fr-fr:ru-ru:en-uk:es-es:uk-ua:pl-pl:it-it:ja-jp:zh-cn:nl-nl:fi-fi:
 ko-kr:eu-es:pt-br:hu-hu:jv-id:gl-es:gu-in:kn-in:da-dk:su-id:ta-in:ca-es:ml-in:te-in:my-mm:yo-ng:km-kh:mr-in:ne-np:bn-bd:
@@ -78,7 +81,8 @@ bn-in:si-lk --ddp=True --hparams="warmup_steps=650000,batch_frame_quad_limit=650
 Occasionally there will be OOMs in T3 training, and you may need to restart the training from time to time. When using
 DDP, `NCCL_BLOCKING_WAIT` should be set to "1" to ensure that the timeout works.
 
-###Few-shot Adaptation
+### Few-shot Adaptation
+
 Norwegian Bokmal (nb-no), Greek (el-gr), and Romanian (ro-ro) are excluded from the training dataset 
 and can be used for few-shot/low-resource adaptation. The command below 
 gives an example for adaptation to el-gr with 100 samples, and you may substitute the `--adapt_languages` and 
@@ -96,20 +100,24 @@ bn-bd:bn-in:si-lk --adapt_languages=el-gr --downsample_languages=el-gr:100 --ddp
 ## Performance
 Below listed the best CERs of selected languages reached by models from each tier on these open datasets, 
 as well as the CERs on few-shot adaptation:
-###T1
+### T1
+
 |   en-us    |   de-de   |    ja-jp   
 | ----  | ---- | ---- |
 |   2.68%    |   2.17%   |    19.06%  |
-###T2
+### T2
+
 |   it-it    |   ru-ru   |    zh-cn   |
 | ----  | ---- | ---- |
 |   1.95%    |   3.21%   |    7.30%   |
-###T3
+### T3
+
 |   da-dk    |   ko-kr   |    te-in   |
 | ----  | ---- | ---- |
 |   1.31%    |   0.94%   |    4.41%   |
 
-###Adaptation
+### Adaptation
+
 |#Samples | nb-no | el-gr | ro-ro |
 | ----  | ---- | ---- | ---- |
 |30| 9.18% | 5.71% | 5.58% |
@@ -119,18 +127,22 @@ as well as the CERs on few-shot adaptation:
 ## Pretrained Models
 The pretrained models are available at [OneDrive Link](https://hkustconnect-my.sharepoint.com/:f:/g/personal/mhear_connect_ust_hk/Ej9EhaGAjHpIrCsVZhcolkUBfmKqCA0yom5AdtVQi8Uocw?e=zXOzub). 
 Metadata for eval are also given to aid fast reproduction. Below listed are the models provided.
-###T1
+### T1
+
 350k steps, ready for T2
 
-###T2
+### T2
+
 650k steps, ready for T3
 
-###T3
+### T3
+
 700k steps, ready for adaptation
 
 1.16M steps, which reaches satisfactory performances on most languages
 
-###Few-shot Adaptation
+### Few-shot Adaptation
+
 nb-no 30, at 710k steps
 
 nb-no 100, at 750k steps
