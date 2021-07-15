@@ -297,7 +297,7 @@ class FeederEval:
         examples = self._get_all_examples()
         examples = [x for x in examples if x['name'] not in exclude]
 
-        if self._shuffle:
+        if self._shuffle and 'mel_target' in examples[0]:
             examples.sort(key=lambda x: len(x['mel_target']))
         batches = _pack_into_batches(examples, self.single, hparams=self._hparams)
         return batches
@@ -401,10 +401,10 @@ def filter_eval_samples(meta, n_spk, n_sample, required_speakers=None):
 def _pack_into_batches(examples, single=False, hparams=None):
     batches = [[]]
     for sample in examples:
-        quad_cnt = max([len(sample['input'])] + [len(s['input']) for s in batches[-1]]) ** 2 + \
-                   len(sample['mel_target']) ** 2
+        target_len = len(sample['mel_target']) if 'mel_target' in sample else int(len(sample['input']) * 1.5)
+        quad_cnt = max([len(sample['input'])] + [len(s['input']) for s in batches[-1]]) ** 2 + target_len ** 2
         if (len(batches[-1]) + 1) * quad_cnt > hparams.batch_frame_quad_limit or \
-                (len(batches[-1]) + 1) * len(sample['mel_target']) > hparams.batch_frame_limit or single:
+                (len(batches[-1]) + 1) * target_len > hparams.batch_frame_limit or single:
             batches.append([])
         batches[-1].append(sample)
     return batches
@@ -419,14 +419,17 @@ def _load_from_zip(zfile, npy_name):
 def _prepare_batch(batch, hparams):
     inputs = _prepare_inputs([x['input'] for x in batch])
     input_lengths = np.asarray([len(x['input']) for x in batch], dtype=np.int32)
+    results = {'inputs': inputs, 'input_lengths': input_lengths}
 
-    mel_targets = _prepare_targets([x['mel_target'] for x in batch])
     if 'target_length' in batch[0]:
         target_lengths = np.asarray([x['target_length'] for x in batch], dtype=np.int32)
-    else:
+        results['target_lengths'] = target_lengths
+    elif 'mel_target' in batch[0]:
         target_lengths = np.asarray([len(x['mel_target']) for x in batch], dtype=np.int32)
-    results = {'inputs': inputs, 'input_lengths': input_lengths, 'mel_targets': mel_targets,
-               'target_lengths': target_lengths}
+        results['target_lengths'] = target_lengths
+    if 'mel_target' in batch[0]:
+        mel_targets = _prepare_targets([x['mel_target'] for x in batch])
+        results['mel_targets'] = mel_targets
 
     if hparams.multi_lingual:
         results['input_language_vecs'] = np.asarray([x['language_vec'] for x in batch], dtype=np.float32)
