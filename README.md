@@ -11,56 +11,56 @@
 <tbody>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/databaker_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/databaker_0.wav">▷</a>
     </td>
     <td>Chinese</td>
     <td>人人生而自由，在尊严和权利上一律平等。</td>
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/ljspeech_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/ljspeech_0.wav">▷</a>
     </td>
     <td>English</td>
     <td>All human beings are born free and equal in dignity and rights.</td>
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/jsut_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/jsut_0.wav">▷</a>
     </td>
     <td>Japanese</td>
     <td>すべての人間は、生まれながらにして自由であり、かつ、尊厳と権利とについてびょうどうである。</td>
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/kss_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/kss_0.wav">▷</a>
     </td>
     <td>Korean</td>
     <td>모든 인간은 태어날 때부터 자유로우며 그 존엄과 권리에 있어 동등하다.</td>
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/thorsten_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/thorsten_0.wav">▷</a>
     </td>
     <td>German</td>
     <td>Alle Menschen sind frei und gleich an Würde und Rechten geboren.</td>
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/hajdurova_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/hajdurova_0.wav">▷</a>
     </td>
     <td>Russian</td>
     <td>Все люди рождаются свободными и равными в своем достоинстве и правах.</td>
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/tux_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/tux_0.wav">▷</a>
     </td>
     <td>Spanish</td>
     <td>Todos los seres humanos nacen libres e iguales en dignidad y derechos.</td>
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/guf02858_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/guf02858_0.wav">▷</a>
     </td>
     <td>Gujarati</td>
     <td>પ્રતિષ્ઠા અને અધિકારોની દૃષ્ટિએ સર્વ માનવો જન્મથી સ્વતંત્ર અને સમાન હોય છે.</td>
@@ -72,21 +72,21 @@
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/nstNB_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/nstNB_0.wav">▷</a>
     </td>
     <td>Norwegian</td>
     <td>Alle mennesker er født frie og med samme menneskeverd og menneskerettigheter.</td>
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/rss_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/rss_0.wav">▷</a>
     </td>
     <td>Romanian</td>
     <td>Toate ființele umane se nasc libere și egale în demnitate și în drepturi.</td>
   </tr>
   <tr>
     <td>
-        <a href="https://mutiann.github.io/papers/byte2speech/samples/free/css10EL_0.wav">▷</a>
+        <a target="_blank" href="https://mutiann.github.io/papers/byte2speech/samples/free/css10EL_0.wav">▷</a>
     </td>
     <td>Greek</td>
     <td>Όλοι οι άνθρωποι γεννιούνται ελεύθεροι και ίσοι στην αξιοπρέπεια και τα δικαιώματα.</td>
