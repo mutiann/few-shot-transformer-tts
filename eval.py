@@ -90,10 +90,17 @@ def main(args):
 
     lang_to_id = json.load(open(os.path.join(data_dir, 'lang_id.json'))) if hp.multi_lingual else None
     spk_to_id = json.load(open(os.path.join(data_dir, 'spk_id.json'))) if hp.multi_speaker else None
+    if os.path.exists('filter_keys.json'):
+        filter_keys = json.load(open('filter_keys.json'))
+    else:
+        filter_keys = {}
 
     eval_languages = args.eval_languages.split(':') if args.eval_languages else None
     eval_speakers = args.eval_speakers.split(':') if args.eval_speakers else None
-    exclude_speakers = args.exclude_speakers.split(':') if args.exclude_speakers else None
+    if args.exclude_speakers in filter_keys:
+        exclude_speakers = filter_keys[args.exclude_speakers]
+    else:
+        exclude_speakers = args.exclude_speakers.split(':') if args.exclude_speakers else None
 
     zipfilepath = args.zipfilepath if args.zipfilepath else os.path.join(data_dir, 'mels.zip')
     if not os.path.exists(zipfilepath):
@@ -124,7 +131,9 @@ def main(args):
             for l in glob.iglob(os.path.join(model_dir, 'model.ckpt-*')):
                 step = l.split('-')[-1]
                 if l not in finished_ckpt and step.isnumeric():
-                    if int(step) < args.start_step or (eval_steps and step not in eval_steps) or \
+                    if eval_steps and int(step) in eval_steps:
+                        pass
+                    elif int(step) < args.start_step or (eval_steps and int(step) not in eval_steps) or \
                             int(step) % args.eval_interval != 0:
                         continue
                     ckpt.append((l, int(step)))
@@ -191,7 +200,7 @@ def main(args):
             if zipfilepath:
                 mse.update(langs, infolog.calculate_mse_dtw(
                             results['mel_aft'], results['generated_lengths'],
-                            batch['mel_targets'].cpu().numpy(), batch['target_lengths'].cpu().numpy()))
+                            batch['mel_targets'], batch['target_lengths']))
         eval_futures = [f.result() for f in eval_futures]
 
         if transcribe_available:
