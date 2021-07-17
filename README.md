@@ -107,11 +107,11 @@ samples of the paper are available [here](https://mutiann.github.io/papers/byte2
 We follow the paper's training recipe, but with open datasets instead.
 By a combination of 15 speech datasets with 572 speakers in 38 languages, we can reach results similar to what 
 we demonstrated in the paper to an extent, as shown by the audio samples above. 
-These datasets are listed below, the preprocessor scripts are 
-given in `corpora/` with the filename below. Locations and details to download the data are also given in 
+These datasets are listed below, the preprocessor scripts below are 
+located at `corpora/`. Locations and details to download the data are also given in 
 the respective preprocessor.
 
-|   Name    |   Preprocessor file names    |   Languages   |
+|   Name    |   Preprocessor script name    |   Languages   |
 |  ----  | ----  | ---- |
 |M-AILABS   |   caito   |   es-es, fr-fr, de-de, uk-ua, ru-ru, pl-pl, it-it, en-us, en-uk|
 |CSS-10     |   css10   |   es-es, fr-fr, ja-jp, de-de, fi-fi, hu-hu, ja-jp, nl-nl, ru-ru, zh-cn| 
@@ -181,7 +181,7 @@ bn-in:si-lk --ddp=True --hparams="warmup_steps=650000,batch_frame_quad_limit=650
 `python eval.py --model-dir=MODEL_DIR --log-dir=LOG_DIR --data-dir=DATA_DIR --start_step=700000
  --eval_languages=ko-kr:da-dk:te-in`
 
-### Few-shot Adaptation
+### Few-shot adaptation
 
 Norwegian Bokmal (nb-no), Greek (el-gr), and Romanian (ro-ro) are excluded from the training dataset 
 and can be used for few-shot/low-resource adaptation. The command below 
