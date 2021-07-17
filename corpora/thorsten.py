@@ -1,4 +1,6 @@
 # Available at http://www.openslr.org/95/
+# Decompress to dataset_path\thorsten-de_v02
+# For example, there should exist dataset_path\thorsten-de_v02\thorsten-de\metadata.csv
 
 from corpora import dataset_path, transformed_path
 import os, glob, shutil

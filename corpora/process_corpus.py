@@ -16,7 +16,13 @@ def min_speaker_samples(corpus_name):
         return 50
     return 100
 
-
+# This will preprocess the audios of all the corpus or specified ones in transformed path, including
+# (1) Find and remove noise spikes at the beginning or the end of each audio.
+# (2) Find silence inside the audio, and skip the audio if a long silence is found.
+# (3) Normalize the amplitude of all audios, by making the absolute amplitude at the 95th percentile among the voiced
+# segments of each audio 0.244.
+# (4) Ensure that there are 1600 samples of silence at the beginning, and 2400 samples at the end.
+# (5) Skip any audio with length <1s or >20s.
 def trim_audios(corpus_list=None):
     from matplotlib import pyplot as plt
     if corpus_list is None:
@@ -41,37 +47,37 @@ def trim_audios(corpus_list=None):
             ref = np.max(y_abs)
             wav_name = os.path.split(wav_file)[-1]
 
-            if True:
-                n_removed = 0
-                # remove noise
-                while len(ints) > 1:
-                    if ints[0][0] == ints[0][1]:
-                        ints = ints[1:]
-                        n_removed += 1
-                        continue
-                    mv = np.max(y_abs[ints[0][0]: ints[0][1]])
-                    if (mv < ref / 10 or (ints[0][1] - ints[0][0] <= (ints[1][0] - ints[0][1]) // 2
-                                          and mv < ref / 4)) and ints[1][0] - ints[0][1] >= 4096:
-                        ints = ints[1:]
-                        n_removed += 1
-                    else:
-                        break
-                while len(ints) > 1:
-                    if ints[-1][0] == ints[-1][1]:
-                        ints = ints[:-1]
-                        n_removed += 1
-                        continue
-                    mv = np.max(y_abs[ints[-1][0]: ints[-1][1]])
-                    if (mv < ref / 10 or (ints[-1][1] - ints[-1][0] <= (ints[-1][0] - ints[-2][1]) // 2
-                                          and mv < ref / 4)) and ints[-1][0] - ints[-2][1] >= 4096:
-                        ints = ints[:-1]
-                        n_removed += 1
-                    else:
-                        break
+            n_removed = 0
+            # remove noise
+            while len(ints) > 1:
+                if ints[0][0] == ints[0][1]:
+                    ints = ints[1:]
+                    n_removed += 1
+                    continue
+                mv = np.max(y_abs[ints[0][0]: ints[0][1]])
+                if (mv < ref / 10 or (ints[0][1] - ints[0][0] <= (ints[1][0] - ints[0][1]) // 2
+                                      and mv < ref / 4)) and ints[1][0] - ints[0][1] >= 4096:
+                    ints = ints[1:]
+                    n_removed += 1
+                else:
+                    break
+            while len(ints) > 1:
+                if ints[-1][0] == ints[-1][1]:
+                    ints = ints[:-1]
+                    n_removed += 1
+                    continue
+                mv = np.max(y_abs[ints[-1][0]: ints[-1][1]])
+                if (mv < ref / 10 or (ints[-1][1] - ints[-1][0] <= (ints[-1][0] - ints[-2][1]) // 2
+                                      and mv < ref / 4)) and ints[-1][0] - ints[-2][1] >= 4096:
+                    ints = ints[:-1]
+                    n_removed += 1
+                else:
+                    break
 
-                if n_removed > 1:
-                    print("%s trimmed %d segments: start %.2fs, end %.2fs" % (
-                        wav_name, n_removed, (ints[0][0]) / sr, (ints[-1][1]) / sr))
+            if n_removed > 1:
+                print("%s trimmed %d segments: start %.2fs, end %.2fs" % (
+                    wav_name, n_removed, (ints[0][0]) / sr, (ints[-1][1]) / sr))
+
             if corpus_name in ['pt_br'] or corpus_name.startswith('caito') or corpus_name.startswith('css10'):
                 thres = 16000
             else:
@@ -81,15 +87,15 @@ def trim_audios(corpus_list=None):
                     ints = None
                     break
             if ints is None:
-                # print("Skipped %s with gap" % wav_name)
+                print("Skipped %s with gap" % wav_name)
                 n_gap += 1
                 n_skip += 1
                 continue
+
             voiced = np.concatenate([y[l: r] for l, r in ints])
             voiced = np.sort(np.abs(voiced))
-            if True:
-                scale = 0.244 / voiced[int(len(voiced) * 0.95)]
-                y = y * scale
+            scale = 0.244 / voiced[int(len(voiced) * 0.95)]
+            y = y * scale
             y = y[ints[0][0]: ints[-1][1]]
 
             _, index = librosa.effects.trim(y, top_db=40, frame_length=256, hop_length=64)
@@ -104,19 +110,21 @@ def trim_audios(corpus_list=None):
                 r = len(y) - 2400
             y = y[l - 1600: r + 2400]
             if not 1 <= len(y) / 16000 <= 20:
-                # print("Skipped %s with length %.2f" % (wav_name, len(y) / 16000))
+                print("Skipped %s with length %.2f" % (wav_name, len(y) / 16000))
                 n_len += 1
                 n_skip += 1
                 continue
             wavfile.write(os.path.join(corpus_out_path, wav_name), 16000, y)
             max95v.append(voiced[int(len(voiced) * 0.95)])
+
         plt.hist(max95v)
         plt.title("Mean=%.3f" % (np.mean(max95v)))
         plt.savefig(os.path.join(f, 'max95v.png'))
         plt.close()
         print("Total skipped %d files (%d for gap, %d for length)" % (n_skip, n_gap, n_len))
 
-
+# This will save the metadata of each dataset to metadata.csv
+# Speakers with too few samples will be removed
 def recollect_meta(corpus_list=None):
     if corpus_list is None:
         corpus_list = glob.iglob(os.path.join(transformed_path, '*'))
@@ -142,7 +150,6 @@ def recollect_meta(corpus_list=None):
                 a_lines.append(l)
             else:
                 n_miss += 1
-                # print("Missing %s" % l[0])
 
         spk_to_remove = []
         n_skip = 0
@@ -156,7 +163,7 @@ def recollect_meta(corpus_list=None):
             if l[0].split('_')[0] in spk_to_remove:
                 n_skip += 1
             else:
-                # dur += librosa.get_duration(filename=os.path.join(f, 'proc_wavs', l[0] + '.wav'))
+                dur += librosa.get_duration(filename=os.path.join(f, 'proc_wavs', l[0] + '.wav'))
                 lines.append('|'.join(l) + '\n')
         dur = dur / 60
         print("%s: total %d missing, %d skipped, %d dup, %d spk, %d spk skipped, %.2fh" % (
@@ -166,7 +173,7 @@ def recollect_meta(corpus_list=None):
 
         open(os.path.join(f, "metadata.csv"), 'w', encoding='utf-8').writelines(lines)
 
-
+# This gives statistics of the whole dataset, to be saved to lang_stat.tsv
 def statistics():
     lang_stat = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
     dirs = list(glob.iglob(os.path.join(transformed_path, '*')))
@@ -182,7 +189,6 @@ def statistics():
         for m in meta:
             name, script, spk, lang = m.split('|')
             assert lang == corpus_lang
-            # dur = 0
             dur = librosa.get_duration(filename=os.path.join(corpus, 'proc_wavs', name + '.wav'))
             lang_stat[lang][spk]['dur'] += dur
             lang_stat[lang][spk]['n'] += 1
@@ -216,7 +222,7 @@ def statistics():
         print("Speakers:", '; '.join(
             ["%s: %d, %.2f h" % (spk, stat['n'], stat['dur'] / 60 / 60) for spk, stat in lang_p]))
 
-
+# This calculate the mel-spectrograms
 def build_mels(corpus_list=None):
     from utils.audio import get_spectrograms, load_wav
     if corpus_list is None:
@@ -234,7 +240,7 @@ def build_mels(corpus_list=None):
             mel = get_spectrograms(wav)
             np.save(os.path.join(f, 'mels', l[0] + '.npy'), mel)
 
-
+# This gives some examples from the dataset for debugging
 def collect_samples():
     import random
     dirs = list(glob.iglob(os.path.join(transformed_path, '*')))
@@ -284,6 +290,9 @@ def check_duplicate_rate():
             print(corpus, len(texts), len(meta), len(texts) / len(meta))
 
 
+# This merges all the acoustic features into a single mels.zip
+# , save speaker and language metadata to spk_id.json and lang_id.json according to the order in `include_corpus`,
+# , and build the metadata split into train and eval set.
 def merge_datasets():
     import zipfile, random, io
 

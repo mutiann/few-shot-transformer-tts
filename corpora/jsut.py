@@ -1,5 +1,6 @@
 # Available at https://sites.google.com/site/shinnosuketakamichi/publication/jsut
-
+# Decompress jsut_ver1.1.zip to dataset_path\jsut_ver1.1
+# For example, there should exist dataset_path\jsut_ver1.1\basic5000
 from corpora import dataset_path, transformed_path
 import os, glob, shutil
 import librosa

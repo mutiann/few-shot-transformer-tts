@@ -1,4 +1,7 @@
 # Available at https://www.caito.de/2019/01/the-m-ailabs-speech-dataset/
+# Please decompress each .tgz file to a single directory.
+# For example, there should exist dataset_path\de_DE\by_book\info.txt
+# Modify `subcorpora` to exclude languages as you wish.
 from corpora import dataset_path, transformed_path
 import os, glob, shutil
 import librosa

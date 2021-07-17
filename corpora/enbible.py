@@ -1,4 +1,6 @@
 # Available at https://www.kaggle.com/bryanpark/the-world-english-bible-speech-dataset
+# Decompress to dataset_path\enbible
+# For example, there should exist dataset_path\enbible\transcript.txt
 
 from corpora import dataset_path, transformed_path
 import os, glob, shutil

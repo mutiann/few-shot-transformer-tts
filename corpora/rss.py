@@ -1,4 +1,6 @@
 # Available at http://romaniantts.com/rssdb/
+# Decompress RomanianDB.tgz to dataset_path\rss
+# For example, there should exist dataset_path\rss\training\training.index
 
 from corpora import dataset_path, transformed_path
 import os, glob, shutil

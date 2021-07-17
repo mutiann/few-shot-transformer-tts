@@ -1,4 +1,7 @@
 # Available at https://github.com/google/language-resources
+# Please download all the compressed files to dataset_path\google.
+# For example, there should be dataset_path\google\my_mm_female.zip
+# The script will then extract and preprocess them all.
 from corpora import dataset_path, transformed_path
 import os, glob, shutil
 import librosa

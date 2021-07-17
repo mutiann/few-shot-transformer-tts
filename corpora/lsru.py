@@ -1,5 +1,6 @@
 # Available at http://www.openslr.org/96/
-
+# Decompress to dataset_path\ruls_data
+# For example, there should exist dataset_path\ruls_data\BOOKS.TXT
 from corpora import dataset_path, transformed_path
 import os, glob, shutil, json
 import librosa

@@ -1,5 +1,8 @@
 # Available at https://www.nb.no/sprakbanken/en/resource-catalogue/oai-nb-no-sbr-21/
 # and https://www.nb.no/sprakbanken/en/resource-catalogue/oai-nb-no-sbr-15/
+# Decompress to dataset_path\da.talesyntese and dataset_path\ibm.talesyntese.nor, respectively
+# There should exist dataset_path\da.talesyntese\rec_scripts\baseform_data\all_script_orig and
+# dataset_path\ibm.talesyntese.nor\pcm\cs\SCRIPTS\CTTS_core.ORIGINAL
 from corpora import dataset_path, transformed_path
 import os, glob, shutil
 import librosa

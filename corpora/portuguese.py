@@ -1,4 +1,6 @@
 # Available at https://github.com/Edresson/TTS-Portuguese-Corpus
+# Decompress to dataset_path\TTS-Portuguese-Corpus
+# For example, there should exist dataset_path\TTS-Portuguese-Corpus\texts.csv
 
 from corpora import dataset_path, transformed_path
 import os, glob, shutil

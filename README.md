@@ -67,7 +67,7 @@
   </tr>
   <tr>
       <td colspan="3">
-        ...even when there are only 30 training samples
+        ...even when there are only 30 utterances for training
       </td>
   </tr>
   <tr>
@@ -101,19 +101,17 @@ minutes of recordings.
 The code is partially based on the open-source 
 [Tacotron2](https://github.com/Rayhane-mamah/Tacotron-2) and 
 [Transformer-TTS](https://github.com/soobinseo/Transformer-TTS). More audio 
-samples of the paper is available [here](https://mutiann.github.io/papers/byte2speech).
+samples of the paper are available [here](https://mutiann.github.io/papers/byte2speech).
 
 # Quickstart
 We follow the paper's training recipe, but with open datasets instead.
-However, due to the discrepancy of data and the lack of high-quality open TTS data in
-most languages, it is inevitable that the training would be much more difficult
-compared to the paper. Nevertheless, we
-attempt to replicate the procedure of tier-wise progressive training, by a combination
-of 15 speech datasets with 572 speakers in 38 languages, divided into three tiers. These
-datasets are listed below, the python scripts for preprocessing are given in `corpora/` with the filename given below,
-and the locations to download the data are also given in the respective code.
+By a combination of 15 speech datasets with 572 speakers in 38 languages, we can reach results similar to what 
+we demonstrated in the paper to an extent, as shown by the audio samples above. 
+These datasets are listed below, the preprocessor scripts are 
+given in `corpora/` with the filename below. Locations and details to download the data are also given in 
+the respective preprocessor.
 
-|   Name    |   Python code    |   Languages   |
+|   Name    |   Preprocessor file names    |   Languages   |
 |  ----  | ----  | ---- |
 |M-AILABS   |   caito   |   es-es, fr-fr, de-de, uk-ua, ru-ru, pl-pl, it-it, en-us, en-uk|
 |CSS-10     |   css10   |   es-es, fr-fr, ja-jp, de-de, fi-fi, hu-hu, ja-jp, nl-nl, ru-ru, zh-cn| 
@@ -132,16 +130,22 @@ and the locations to download the data are also given in the respective code.
 |RSS   |   rss |   ro-ro
 
 ### Preprocessing
-1. Please download and extract these datasets to the `dataset_path` specified in `corpora/__init__.py`.
-2. Run the preprocessing code for each dataset given in `corpora`. The results are saved at `transformed_path`.
-3. Run the `corpora/process_corpus.py` to collect all the metadata as well as the mel spectrograms. The processed 
-dataset will be put at `packed_path`, which uses around 100GB space.
+1. Please download and extract these datasets to the `dataset_path` specified in `corpora/__init__.py`. You can change
+the `dataset_path`, `transformed_path` and `packed_path` to your own. 
+2. Run the preprocessor for each dataset given in `corpora`. The results are saved to `transformed_path`.
+`include_corpus` in `corpora/__init__.py` could be modified to add or remove datasets to be used. 
+Particularly, you may refer to the preprocessors to include your own datasets to the training,  
+and then add the dataset to `include_corpus` and `dataset_language` in `corpora/__init__.py`.
+3. Run the `corpora/process_corpus.py`, which filters the dataset, trims the audios, produces the metadata, generates
+ the mel spectrograms, and pack all the features into a single zip file. The processed 
+dataset will be put at `packed_path`, which uses around 100GB space. See the script for details.
 
 ### Training
 Similarly, we split the dataset into three tiers. Below are the commands to train and evaluate on each tier. Please
 substitute the directories with your own. The evaluation script can be run simultaneously with the training script.
 You may also use the evaluation script to synthesize samples from pretrained models.
 Please refer to the help of the arguments for their meanings.
+
 Besides, to report CER, you need to create `azure_key.json` with your own Azure STT subscription, with content of
 `{"subscription": "YOUR_KEY", "region": "YOUR_REGION"}`, see `utils/transcribe.py`.
 Due to significant differences of the datasets used, the implementation is for demonstration only and could not fully 
@@ -263,7 +267,7 @@ Metadata for eval are also given to aid fast reproduction. Below listed are the 
 
 ## Synthesis
 To synthesize audios from the pretrained models, download the models along with the metadata files (`lang_id.json` and
-`spk_id.json`). Since there is no ground truth mels, you need to create metadata with dummy mel targets information
+`spk_id.json`). Since there are no ground truth mels, you need to create metadata with dummy mel targets information
 , and run `eval.py` without neither `--zipfilepath` specified nor `mels.zip` present in `--data-dir`. The metadata file
 takes the form of `SPEAKERNAME_FILEID|DUMMY_LENGTH|TEXT|LANG` for each line of the file. For example, you can generate
 the audio examples above by saving the following metadata to `script.txt`:

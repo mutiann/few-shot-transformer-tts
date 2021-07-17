@@ -1,4 +1,6 @@
 # Available at https://www.kaggle.com/bryanpark/korean-single-speaker-speech-dataset
+# Decompress the .zip file to dataset_path\kss
+# For example, there should exist dataset_path\kss\transcript.v.1.4.txt
 
 from corpora import dataset_path, transformed_path
 import os, glob, shutil

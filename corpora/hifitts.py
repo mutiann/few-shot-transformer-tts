@@ -1,4 +1,6 @@
 # Available at http://www.openslr.org/109/
+# Decompress to dataset_path\hi_fi_tts_v0
+# For example, there should exist dataset_path\hi_fi_tts_v0\hi_fi_tts_v0\readers_books_clean.txt
 
 from corpora import dataset_path, transformed_path
 import os, glob, shutil

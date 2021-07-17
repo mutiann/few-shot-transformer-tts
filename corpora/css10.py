@@ -1,4 +1,8 @@
 # Available at https://github.com/Kyubyong/css10
+# Please decompress each .zip file to a single directory, with the name `css10_LANGCODE`, with `LANGCODE` the first two
+# letter of the locale code in `subcorpora`.
+# For example, there should exist dataset_path\css10_de\transcript.txt
+# Modify `subcorpora` to exclude languages as you wish.
 from corpora import dataset_path, transformed_path
 import os, glob, shutil
 import librosa

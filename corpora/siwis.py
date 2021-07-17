@@ -1,5 +1,6 @@
 # Available at https://datashare.ed.ac.uk/handle/10283/2353
-
+# Decompress SiwisFrenchSpeechSynthesisDatabase.zip to dataset_path\SiwisFrenchSpeechSynthesisDatabase
+# For example, there should exist dataset_path\wavs
 from corpora import dataset_path, transformed_path
 import os, glob, shutil
 import librosa

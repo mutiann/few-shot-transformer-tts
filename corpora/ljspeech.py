@@ -1,4 +1,7 @@
 # Available at https://keithito.com/LJ-Speech-Dataset/
+#
+# Decompress to dataset_path\LJSpeech-1.1
+# For example, there should exist dataset_path\LJSpeech-1.1\metadata.csv
 
 from corpora import dataset_path, transformed_path
 import os, glob, shutil

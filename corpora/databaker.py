@@ -1,5 +1,6 @@
-# Available at https://www.data-baker.com/#/data/index/source
-
+# Available at https://www.data-baker.com/data/index/source/
+# Decompress BZNSYP.zip to dataset_path\BZNSYP
+# For example, there should exist dataset_path\BZNSYP\Wave
 
 from corpora import dataset_path, transformed_path
 import os, glob, shutil
