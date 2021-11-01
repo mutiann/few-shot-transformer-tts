@@ -138,7 +138,10 @@ Particularly, you may refer to the preprocessors to include your own datasets to
 and then add the dataset to `include_corpus` and `dataset_language` in `corpora/__init__.py`.
 3. Run the `corpora/process_corpus.py`, which filters the dataset, trims the audios, produces the metadata, generates
  the mel spectrograms, and pack all the features into a single zip file. The processed 
-dataset will be put at `packed_path`, which uses around 100GB space. See the script for details.
+dataset will be put at `packed_path`, which uses around 100GB space. Since it imports other scripts in the repository, 
+you need to add the abosolute path of the repository to the environment variable PYTHONPATH beforehand if you are 
+running it under a command line (most IDEs automatically handle this).
+See the script for details.
 
 ### Training
 Similarly, we split the dataset into three tiers. Below are the commands to train and evaluate on each tier. Please
