@@ -1,6 +1,6 @@
-import tensorflow as tf
+from utils.hparams import HParams
 
-hparams = tf.contrib.training.HParams(
+hparams = HParams(
     num_mels=80,
     frame_length_ms=50,
     frame_shift_ms=12.5,
